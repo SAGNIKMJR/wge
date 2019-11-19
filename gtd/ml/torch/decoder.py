@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from collections import namedtuple, defaultdict
-from itertools import izip
+# from itertools import izip
 
 import numpy as np
 import torch
@@ -90,7 +90,7 @@ class TrainDecoder(Module):
 
         loss_list = []
         rnn_states = []
-        for t, (x, target_word) in enumerate(izip(input_embed_list, target_word_list)):
+        for t, (x, target_word) in enumerate(zip(input_embed_list, target_word_list)):
             # x is a (batch_size, word_dim) SequenceBatchElement, target_word is a (batch_size,) Variable
 
             # update rnn state
@@ -461,7 +461,7 @@ class SampleDecoder(LeftRightDecoder):
 
         # update states
         new_states = []
-        for batch_idx, (state, hint) in enumerate(izip(states, hints_at_t)):
+        for batch_idx, (state, hint) in enumerate(zip(states, hints_at_t)):
             if state.terminated:
                 new_state = state
             else:
@@ -691,7 +691,7 @@ class BeamDecoder(LeftRightDecoder):
         # note that here we store the original, UN-MODIFIED extension_probs
         # these are actual generation probabilities
         new_states = []
-        for batch_idx, token_idx in izip(batch_indices, token_indices):
+        for batch_idx, token_idx in zip(batch_indices, token_indices):
             state = states[batch_idx]
             if state.terminated:
                 new_state = state

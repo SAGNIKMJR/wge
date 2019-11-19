@@ -900,7 +900,8 @@ def extract_utterances():
     try:
         task_name = sys.argv[1]
     except:
-        print >> sys.stderr, 'Usage: {} task_name'.format(sys.argv[0])
+        # print >> sys.stderr, 'Usage: {} task_name'.format(sys.argv[0])
+        sys.stderr.write('Usage: {} task_name'.format(sys.argv[0]))
         exit(1)
     from wge.environment import Environment
     FIELD_EXTRACTORS[task_name] = lambda utt: Fields({})
@@ -910,7 +911,7 @@ def extract_utterances():
     for i in xrange(25):
         states = env.reset()
         for state in states:
-            print 'UTT:\t{}'.format(state.utterance.replace('\n', ' '))
+            print('UTT:\t{}'.format(state.utterance.replace('\n', ' ')))
     env.close()
 
 if __name__ == '__main__':

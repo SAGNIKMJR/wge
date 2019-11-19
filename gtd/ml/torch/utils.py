@@ -3,7 +3,8 @@ from contextlib import contextmanager
 
 import numpy as np
 from numpy.testing import assert_array_almost_equal
-from torch import _TensorBase, torch
+# from torch import _TensorBase, torch
+import torch
 from torch.autograd import Variable
 
 from gtd.utils import chunks
@@ -24,12 +25,12 @@ def conditional(b, x, y):
 
 
 def to_numpy(x):
-    if isinstance(x, Variable):
-        x = x.data  # unwrap Variable
-
-    if isinstance(x, _TensorBase):
-        x = x.cpu().numpy()
-    return x
+    # if isinstance(x, Variable):
+    #     x = x.data  # unwrap Variable
+    #
+    # if isinstance(x, _TensorBase):
+    #     x = x.cpu().numpy()
+    return x.detach().cpu().numpy()
 
 
 def assert_tensor_equal(x, y, decimal=6):
@@ -107,10 +108,10 @@ def similar_size_batches(examples, batch_size, size=lambda x: len(x.target_words
     improved_cost = total_cost(batches)
     optimal_cost = sum(size(ex) for ex in examples)
 
-    print 'Optimized batches: reduced cost from {naive} (naive) to {improved} ({reduction}% reduction).\n' \
+    print('Optimized batches: reduced cost from {naive} (naive) to {improved} ({reduction}% reduction).\n' \
           'Optimal (batch_size=1) would be {optimal}.'.format(naive=naive_cost, improved=improved_cost,
                                                               reduction=float(naive_cost - improved_cost) / naive_cost,
-                                                              optimal=optimal_cost)
+                                                              optimal=optimal_cost))
 
     return batches
 
@@ -119,9 +120,9 @@ def print_module_parameters(m, depth=0):
     """Print out all parameters of a module."""
     tabs = '\t' * depth
     for p_name, p in m._parameters.items():
-        print tabs + p_name
+        print(tabs + p_name)
     for c_name, c in m.named_children():
-        print tabs + c_name
+        print(tabs + c_name)
         print_module_parameters(c, depth + 1)
 
 
@@ -136,7 +137,7 @@ def try_gpu(x):
             return x.cuda()
         except (AssertionError, RuntimeError):
             # actually, GPUs don't exist
-            print 'No GPUs detected. Sticking with CPUs.'
+            print('No GPUs detected. Sticking with CPUs.')
             _GPUS_EXIST = False
             return x
     else:

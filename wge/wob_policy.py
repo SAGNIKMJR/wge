@@ -1179,7 +1179,8 @@ class MiniWoBPolicyJustification(Justification):
         items = []
         for thing, prob in sorted(
                 zip(things, thing_probs),
-                key=lambda (thing, prob): prob, reverse=True):
+                # key=lambda (thing, prob): prob, reverse=True):
+                key=lambda thing_prob: thing_prob[1], reverse=True):
             selected = '>' if thing == selected_thing else ' '
             items.append(u'{} [{:.3f}] {}'.format(selected, prob, thing))
         return '\n'.join(items)

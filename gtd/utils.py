@@ -329,7 +329,7 @@ def data_split(items, dev_part=0.1, test_part=0.1):
     assert len(train_set.intersection(dev_set)) == 0
     assert len(train_set.intersection(test_set)) == 0
 
-    print 'train {}, dev {}, test {}'.format(len(train), len(dev), len(test))
+    print('train {}, dev {}, test {}'.format(len(train), len(dev), len(test)))
     return train, dev, test
 
 
@@ -1092,7 +1092,7 @@ def parallel_call(fxn, vals):
             executor.submit(val, val)
         for val, result in gtd.chrono.verboserate(executor.results(), desc='Processing values', total=len(vals)):
             if isinstance(result, Failure):
-                print result.traceback
+                print(result.traceback)
             else:
                 results.append(result)
     return results
