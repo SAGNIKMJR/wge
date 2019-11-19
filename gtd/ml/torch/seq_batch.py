@@ -170,8 +170,7 @@ class SequenceBatch(namedtuple('SequenceBatch', ['values', 'mask']), NamedTupleL
         else:
             if (sums.data == 0).any():
                 raise ValueError("Averaging zero elements.")
-
-        weights = mask / sums.expand(*mask.size())
+        weights = mask / sums.unsqueeze(1).expand(*mask.size())
         return cls.weighted_sum(seq_batch, weights)
 
     @classmethod

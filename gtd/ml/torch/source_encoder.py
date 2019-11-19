@@ -83,7 +83,7 @@ class BidirectionalSourceEncoder(SourceEncoder):
             raise ValueError('hidden_dim must be even for BidirectionalSourceEncoder.')
         self._hidden_dim = hidden_dim
 
-        build_encoder = lambda: SimpleSourceEncoder(rnn_cell_factory(input_dim, hidden_dim / 2))
+        build_encoder = lambda: SimpleSourceEncoder(rnn_cell_factory(input_dim, hidden_dim // 2))
         self.forward_encoder = build_encoder()
         self.backward_encoder = build_encoder()
 

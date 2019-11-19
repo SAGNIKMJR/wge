@@ -333,8 +333,8 @@ class MiniWoBTrainingRun(TorchTrainingRun):
             avg_return (float)
         """
         num_instances = self._env.num_instances
-        eval_iters = num_episodes / num_instances
-        all_seeds = range(1, eval_iters * num_instances + 1)  # [1, 2, 3, ...]
+        eval_iters = num_episodes // num_instances
+        all_seeds = list(range(1, eval_iters * num_instances + 1))  # [1, 2, 3, ...]
         episodes = []
         for _ in tqdm(range(eval_iters), desc="Evaluating policy"):
             seeds = [all_seeds.pop() for _ in range(num_instances)]

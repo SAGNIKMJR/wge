@@ -259,7 +259,7 @@ class MiniWoBPolicy(Policy):
 
         # ===== Compute DOM probs from field weights =====
         dom_head_weights = F.softmax(  # Weight per each head
-                self._second_dom_attn_head_weights(attended_query_embeds))
+                self._second_dom_attn_head_weights(attended_query_embeds), dim=1)
 
         first_head_weights = torch.index_select(
                 dom_head_weights, 1,
@@ -321,7 +321,7 @@ class MiniWoBPolicy(Policy):
 
         # (batch_size, 2) (index 0 corresponds to click)
         click_or_type_probs = F.softmax(
-                self._click_or_type_linear(dom_contexts))
+                self._click_or_type_linear(dom_contexts), dim=1)
 
         action_scores_batch = self._compute_action_scores(
                 dom_selection.indices.data.cpu().numpy(), dom_elems, dom_probs,
@@ -603,6 +603,7 @@ class MiniWoBPolicy(Policy):
         if self._update_rule == "only-last-experience":
             model_prob = lambda episode: np.exp(episode[-1].log_prob.data.cpu().numpy()[0])
         elif self._update_rule == "use-whole-episode":
+            # model_prob = lambda episode: (print(exp.log_prob.data.cpu().numpy()[0]) for exp in episode)
             model_prob = lambda episode: np.exp(np.sum(exp.log_prob.data.cpu().numpy()[0] for exp in episode))
         else:
             error_msg = "{} not a supported update rule".format(self._update_rule)
@@ -882,10 +883,10 @@ class StructuredQueryPolicy(MiniWoBPolicy):
             if len(keys) < max_num_fields:
                 submask[len(keys):] = 0.
                 keys.extend(
-                    [[UtteranceVocab.PAD] for _ in xrange(
+                    [[UtteranceVocab.PAD] for _ in range(
                         max_num_fields - len(keys))])
                 values.extend(
-                    [[UtteranceVocab.PAD] for _ in xrange(
+                    [[UtteranceVocab.PAD] for _ in range(
                         max_num_fields - len(values))])
 
         # Flatten to list[list[unicode]] (batch * num_keys) x key length
@@ -1009,7 +1010,7 @@ class NaturalLanguagePolicy(MiniWoBPolicy):
             # Calculate the corresponding type actions
             type_values_batch = []
             mask = np.zeros((batch_size, k * k)).astype(np.float32)
-            for batch_idx in xrange(batch_size):
+            for batch_idx in range(batch_size):
                 state = states[batch_idx]
                 type_values = []
                 for i, start_index in enumerate(top_k_start_indices[batch_idx].data.cpu().numpy()):
@@ -1121,7 +1122,7 @@ class MiniWoBPolicyJustification(Justification):
 
     def to_json_dict(self):
         def as_pairs(items, probs):
-            item_strs = [unicode(item) for item in items]
+            item_strs = [str(item) for item in items]
             prob_floats = [round(f, 4) for f in probs]
             return sorted(zip(item_strs, prob_floats), key=lambda x: -x[1])
 

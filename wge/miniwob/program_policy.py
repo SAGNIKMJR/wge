@@ -148,7 +148,7 @@ class LinearProgramPolicy(ProgramPolicy):
 
     def _init_weights(self, labeled_demo):
         weight = float(self._config.weight_init)
-        for i in xrange(len(labeled_demo)):
+        for i in range(len(labeled_demo)):
             for weighted_program in labeled_demo.programs(i):
                 weighted_program.set_weight(weight)
         labeled_demo.initialize_critics(None)
@@ -179,7 +179,7 @@ class SoftmaxProgramPolicy(ProgramPolicy):
     """
     def _init_weights(self, labeled_demo):
         weight = float(self._config.weight_init)
-        for i in xrange(len(labeled_demo)):
+        for i in range(len(labeled_demo)):
             weighted_programs = labeled_demo.programs(i)
             if not weighted_programs:
                 continue
@@ -252,9 +252,9 @@ class SoftmaxProgramPolicy(ProgramPolicy):
             else:  # Skip action
                 a_given_p = {selected: 1.}  # Skips are deterministic
 
-            program_probs = dict(zip(
+            program_probs = dict(list(zip(
                 candidate_programs,
-                self.compute_program_probs(candidate_programs)))
+                self.compute_program_probs(candidate_programs))))
             action_prob = sum(
                 a_given_p[program] * program_probs[program]
                 for program in a_given_p)

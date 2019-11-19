@@ -166,7 +166,8 @@ class EpisodeLogger(object):
         # save machine-readable version
         with open(trace_path + '.json', 'w', 'utf8') as f:
             trace_dicts = [trace.to_json_dict() for trace in episode_traces]
-            json.dump(trace_dicts, f, indent=2)
+            # print(trace_dicts[0])
+            json.dump(str(trace_dicts), f, indent=2)
 
         # save pretty-printed version
         with open(trace_path + '.txt', 'w', 'utf8') as f:

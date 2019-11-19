@@ -154,7 +154,7 @@ class LabeledDemonstration(object):
             # All fields tokens
             fields = env.fields
             fields_tokens = [
-                FieldsValueSelectorToken(i) for i in xrange(len(fields.keys))]
+                FieldsValueSelectorToken(i) for i in range(len(fields.keys))]
             strings += fields_tokens
 
             # TODO: Support last. Hard because it depends on the actual exec

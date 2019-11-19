@@ -28,6 +28,8 @@ class Cache(object):
         Returns:
             values (list[Object]): in same order as keys
         """
+        # print(self._cache)
+        # print('keys: ', keys)
         return [self._cache[key] for key in keys]
 
     def cache(self, keys, values):
@@ -38,7 +40,9 @@ class Cache(object):
             values (list[Object]): same length as keys
         """
         assert len(keys) == len(values)
-
+        # print(list(keys))
+        # print('here')
+        # print(list(values))
         for key, value in zip(keys, values):
             self._cache[key] = value
 

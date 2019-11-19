@@ -274,9 +274,12 @@ class UtteranceEmbedder(CachedEmbedder):
                     combined_values, combined_masks)]
 
             assert len(final_states) == len(combined_states_by_batch)
+            # self._cache.cache(
+            #     uncached_utterances,
+            #     zip(final_states, combined_states_by_batch))
             self._cache.cache(
-                uncached_utterances,
-                zip(final_states, combined_states_by_batch))
+                list(uncached_utterances),
+                list(zip(final_states, combined_states_by_batch)))
 
         final_states, combined_states = zip(*self._cache.get(utterance))
         return torch.stack(final_states, 0), combined_states

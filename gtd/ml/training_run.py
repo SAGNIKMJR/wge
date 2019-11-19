@@ -73,16 +73,19 @@ class TrainingRun(object, metaclass=ABCMeta):
             print('Apply them with the `patch` command line tool.')
 
             for diff in diffindex:
-                filename = str(diff.a_rawpath).replace(u'/', u'-').replace(u'.', u'-')
+                # filename = str(diff.a_rawpath).replace(u'/', u'-').replace(u'.', u'-')
+                filename = str(diff.a_rawpath).replace('/', '-').replace('.', '-')
 
                 def to_file(s, ext):
                     # convert to unicode
-                    try:
-                        s = s.decode('utf-8')
-                    except UnicodeDecodeError:
+                    # try:
+                    #     s = s.decode('utf-8')
+                    # except UnicodeDecodeError:
+                    #     print('Failed to save patch for {}'.format(filename))
+                    #     return
+                    if not isinstance(s, str):
                         print('Failed to save patch for {}'.format(filename))
                         return
-
                     path = join(patch_dir, filename + ext)
                     with codecs.open(path, 'w', encoding='utf-8') as f:
                         f.write(s)
