@@ -420,7 +420,7 @@ class FocusAndRandomFieldTypeToken(ProgramAction):
         element = elements.sample_inputable()
 
         # Choose a random field
-        s = np.random.choice(env.fields.values)
+        s = random.choice(list(env.fields.values))
 
         # Update last
         env.set_last(element)

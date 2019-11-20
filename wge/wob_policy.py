@@ -603,8 +603,8 @@ class MiniWoBPolicy(Policy):
         if self._update_rule == "only-last-experience":
             model_prob = lambda episode: np.exp(episode[-1].log_prob.data.cpu().numpy()[0])
         elif self._update_rule == "use-whole-episode":
-            # model_prob = lambda episode: (print(exp.log_prob.data.cpu().numpy()[0]) for exp in episode)
-            model_prob = lambda episode: np.exp(np.sum(exp.log_prob.data.cpu().numpy()[0] for exp in episode))
+            model_prob = lambda episode: (print(exp.log_prob.data.cpu().numpy()[0]) for exp in episode)
+            # model_prob = lambda episode: np.exp(np.sum(exp.log_prob.data.cpu().numpy()[0] for exp in episode))
         else:
             error_msg = "{} not a supported update rule".format(self._update_rule)
             raise NotImplementedError(error_msg)

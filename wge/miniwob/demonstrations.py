@@ -573,7 +573,7 @@ class EpisodeGraph(collections.Sequence):
                     if chunk:
                         chunks.append(chunk)
             elif t == 'keypress':
-                char = unichr(raw_action['charCode'])
+                char = chr(raw_action['charCode'])
                 chunks.append(Chunk('type',
                     last_keydown.state, last_keydown.target, char))
                 pending_keypresses += 1
