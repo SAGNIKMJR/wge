@@ -20,6 +20,7 @@ def get_screenshot(driver, width=160, height=210):
         PIL Image object
     """
     png_data = driver.get_screenshot_as_png()
+    print('here: ', png_data)
     pil_image = Image.open(StringIO(png_data))
     pil_image = pil_image.crop(
             (0, 0, width, height)).convert('RGB')

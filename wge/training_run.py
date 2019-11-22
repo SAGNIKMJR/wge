@@ -181,8 +181,7 @@ class MiniWoBTrainingRun(TorchTrainingRun):
             # - control_step is used to determine the timing of various events
             # - train_state.train_steps is the number of grad steps we've taken
             if control_step % 10 == 0:
-                self.tb_logger.log_value('grad_steps',
-                    self.train_state.train_steps, step=control_step)
+                self.tb_logger.log_value('grad_steps', self.train_state.train_steps, step=control_step)
 
             self.metadata['control_steps'] = control_step
 
@@ -193,7 +192,7 @@ class MiniWoBTrainingRun(TorchTrainingRun):
 
                 # explore and update program policy
                 if (control_step % config.explore.program == 0) and \
-                    self.program_policy is not None:
+                        self.program_policy is not None:
                     episodes = self._explore(self.program_policy,
                                              'explore_program',
                                              control_step)
@@ -303,7 +302,7 @@ class MiniWoBTrainingRun(TorchTrainingRun):
     def _explore(self, policy, label, control_step):
         # roll out episodes using basic generator and program policy
         episodes = self._basic_episode_generator(policy, test_env=False,
-                                                 test_policy=False)
+                                                 test_policy=False, record_screenshots=False)
 
         # Update replay buffer (excluding episodes that ended with MiniWoBTerminate)
         self._replay_buffer.extend(self._filter_episodes(episodes))

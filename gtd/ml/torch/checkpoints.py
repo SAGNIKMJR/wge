@@ -41,13 +41,19 @@ class TrainState(object):
         self.random_state = RandomState()
 
         # save model
-        torch.save(self.model.state_dict(), join(path, 'model'))
-        torch.save(self.optimizer.state_dict(), join(path, 'optimizer'))
+        chkpt_dct = {'model': self.model.state_dict(),
+                     'optimizer': self.optimizer.state_dict(),
+                     }
+        torch.save(chkpt_dct, join(path, 'checkpoint.pth.tar'))
+        # torch.save(self.model.state_dict(), join(path, 'model'))
+        # torch.save(self.optimizer.state_dict(), join(path, 'optimizer'))
 
         # pickle remaining attributes
         d = {attr: getattr(self, attr) for attr in ['train_steps', 'random_state', 'max_grad_norm']}
-        with open(join(path, 'metadata.p'), 'w') as f:
-            pickle.dump(d, f)
+        import json
+        # with open(join(path, 'metadata.p'), 'w') as f:
+        #     # pickle.dump(str(d), f)
+        #     f.write(pickle.dumps(d))
 
     @classmethod
     def load(cls, path, model, optimizer):

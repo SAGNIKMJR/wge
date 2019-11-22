@@ -1216,7 +1216,8 @@ class ReplayBufferUpdateTrace(Trace):
 
     def dumps(self):
         weighted_episodes = zip(self._scored_episodes, self._importance_weights, self._model_probs)
-        weighted_episodes.sort(key=lambda x: -x[1])  # sort by importance weight
+        # weighted_episodes.sort(key=lambda x: -x[1])  # sort by importance weight
+        sorted(weighted_episodes, key=lambda x: -x[1])  # sort by importance weight
 
         episodes_str = u'\n\n'.join(
             u'===== EPISODE {i} (importance weight = {importance:.3f}, model prob = {model:.3f}) =====\n\n{episode}'
