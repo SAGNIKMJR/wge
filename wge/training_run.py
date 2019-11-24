@@ -288,12 +288,15 @@ class MiniWoBTrainingRun(TorchTrainingRun):
 
                 # stop training if we reach max reward
                 if np.isclose(avg_reward_train, 1.0):
+                    print('Saving checkpoint for early stopping')
+                    self.checkpoints.save(self.train_state, control_step=control_step)
                     break
 
             # save neural policy
-            if control_step % config.log.save == 0 and control_step != 0:
+            if (control_step % config.log.save == 0 and control_step != 0) or control_step ==\
+                    config.train.max_control_steps - 1:
                 print('Saving checkpoint')
-                self.checkpoints.save(self.train_state)
+                self.checkpoints.save(self.train_state, control_step=control_step)
 
 
     def _filter_episodes(self, episodes):

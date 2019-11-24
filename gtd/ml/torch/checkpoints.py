@@ -115,9 +115,10 @@ class Checkpoints(object):
             raise ValueError('Checkpoint #{} does not exist.'.format(train_steps))
         return TrainState.load(ckpt_path, model, optimizer)
 
-    def save(self, train_state):
+    def save(self, train_state, control_step=0):
         """Save TrainState."""
-        ckpt_path = join(self._path, '{}.checkpoint'.format(train_state.train_steps))
+        # ckpt_path = join(self._path, '{}.checkpoint'.format(train_state.train_steps))
+        ckpt_path = join(self._path, '{}.checkpoint'.format(control_step))
         train_state.save(ckpt_path)
 
     def load_latest(self, model, optimizer):
