@@ -10,11 +10,16 @@ from gtd.utils import cached_property
 class TorchTrainingRun(TrainingRun):
     def __init__(self, config, save_dir):
         super(TorchTrainingRun, self).__init__(config, save_dir)
-        self.workspace.add_dir('checkpoints', 'checkpoints')
+        if config.infer:
+            self.workspace.add_dir('checkpoints', config.checkpoints)
+        else:
+            self.workspace.add_dir('checkpoints', 'checkpoints')
+
 
     @cached_property
     def checkpoints(self):
         return Checkpoints(self.workspace.checkpoints)
+        # return Checkpoints('/home/sagnik/Documents/code_n_data/repos/personal/RL_standalone/data/experiments/1_dummy/checkpoints')
 
     @classmethod
     def _finite_grads(cls, parameters):

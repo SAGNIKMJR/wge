@@ -1,12 +1,10 @@
 gamma = 1.0
 discount_negative_reward = False
-infer = False
-checkpoints = "/home/sagnik/Documents/code_n_data/repos/personal/RL_standalone/data/experiments/WGE_RL_email_inbox_1500_iterations/checkpoints"
 
 train {
-    max_control_steps = 10000  # max iterations of outer train loop
+    max_control_steps = 50000  # max iterations of outer train loop
     learning_rate = 0.001
-    behavioral_cloning = False
+    behavioral_cloning = True
     replay = 5  # perform a round of replay every X control steps
     replay_steps = 30  # number of grad steps to take for each round of replay
     reinforce_program = True  # whether to REINFORCE update program policy
@@ -27,18 +25,18 @@ log {
     episodes_to_evaluate_big = 500
 
     # log basic stats every X control steps
-    evaluate = 100  # small evaluation
-    evaluate_big = 500  # big evaluation
+    evaluate = 20 # 100  # small evaluation
+    evaluate_big = 20 # 500  # big evaluation
     explore = 10  # exploration, must be divisible by explore.program or explore.neural
     replay = 10  # replay, must be divisible by train.replay
 
     # save full traces every X control steps
-    trace_evaluate = 1000  # Traces for evaluation, must be divisible by log.evaluate
-    trace_explore = 1000  # Traces for exploration, must be divisible by log.explore
-    trace_replay = 1000  # Traces for replay, must be divisible by log.replay
+    trace_evaluate = 20 # 1000  # Traces for evaluation, must be divisible by log.evaluate
+    trace_explore = 20  # 1000  # Traces for exploration, must be divisible by log.explore
+    trace_replay = 20 # 1000  # Traces for replay, must be divisible by log.replay
 
-    save = 1000 # 1000000000  # save every X steps
-    visualize_attention = 2000  # 100000  # essentially, visualize once per episode
+    save = 20 # 1000000000  # save every X steps
+    visualize_attention = 20  # 100000  # essentially, visualize once per episode
     record_screenshots = False    # whether to record screenshots in trace directory (slow; steal cursor)
 }
 

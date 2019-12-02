@@ -40,6 +40,8 @@ torch.manual_seed(args.seed)
 runs = MiniWoBTrainingRuns(check_commit=(args.check_commit == 'strict'))
 
 config_paths = args.config_paths
+
+infer = False
 if len(config_paths) == 1 and config_paths[0].isdigit():
     # reload old run
     run = runs[int(config_paths[0])]
@@ -71,6 +73,7 @@ else:
     # merge all configs together
     config = Config.merge(configs)  # later configs overwrite earlier configs
     run = runs.new(config, name=args.name)  # new run from config
+    infer = config.infer
 
     run.metadata['description'] = args.description
     run.metadata['name'] = args.name
@@ -100,7 +103,10 @@ if args.profile:
 
 with save_stdout(run.workspace.root):
     try:
-        run.train()
+        if infer:
+            run.infer()
+        else:
+            run.train()
     finally:
         run.close()
         if args.profile:

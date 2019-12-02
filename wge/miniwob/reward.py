@@ -36,7 +36,11 @@ def raw_reward_threshold(threshold):
 
 
 def get_reward_processor(config):
-    if config.type == "time_independent":
+    if config.type == 'augmented':
+        return get_raw_reward
+    elif config.type == 'hard':
+        return get_click_checkboxes_hard
+    elif config.type == "time_independent":
         return get_raw_reward
     elif config.type == "time_discounted":
         return get_original_reward

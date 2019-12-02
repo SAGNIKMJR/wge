@@ -57,13 +57,16 @@ class TrainState(object):
 
     @classmethod
     def load(cls, path, model, optimizer):
-        with open(join(path, 'metadata.p'), 'r') as f:
-            d = pickle.load(f)
+        # with open(join(path, 'metadata.p'), 'r') as f:
+        #     d = pickle.load(f)
 
         # load model
-        optimizer.load_state_dict(torch.load(join(path, 'optimizer')))
-        model.load_state_dict(torch.load(join(path, 'model')))
-        train_state = TrainState(model=model, optimizer=optimizer, **d)
+        # optimizer.load_state_dict(torch.load(join(path, 'optimizer')))
+        # model.load_state_dict(torch.load(join(path, 'model')))
+        # train_state = TrainState(model=model, optimizer=optimizer, **d)
+        model.load_state_dict(torch.load(join(path, 'checkpoint.pth.tar'))['model'])
+        optimizer.load_state_dict(torch.load(join(path, 'checkpoint.pth.tar'))['optimizer'])
+        train_state = TrainState(model, optimizer, None, None, None)
         return train_state
 
     @classmethod

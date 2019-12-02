@@ -134,9 +134,9 @@ class MiniWoBTrainingRun(TorchTrainingRun):
         # TODO: reload replay buffer?
         self.train_state = self.checkpoints.load_latest(
                 neural_policy, optimizer)
-
         # build program policy
-        self._program_policy = self._build_program_policy()
+        if not config.infer:
+            self._program_policy = self._build_program_policy()
 
     def close(self):
         self._env.close()
@@ -298,6 +298,17 @@ class MiniWoBTrainingRun(TorchTrainingRun):
                 print('Saving checkpoint')
                 self.checkpoints.save(self.train_state, control_step=control_step)
 
+    def infer(self):
+        print('*' * 80)
+        print('INFERING')
+        print('*' * 80)
+        config = self.config
+
+        _ = self._evaluate(self.neural_policy, config.log.episodes_to_evaluate_big, 'test_big', test_env=True,
+                           log=True, trace=False, control_steps=0)
+
+        print('Saving checkpoint')
+        self.checkpoints.save(self.train_state, control_step=0)
 
     def _filter_episodes(self, episodes):
         return [ep for ep in episodes if not isinstance(ep[-1].action, MiniWoBTerminate)]

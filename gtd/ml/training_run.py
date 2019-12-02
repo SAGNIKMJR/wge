@@ -152,7 +152,6 @@ class TrainingRuns(Mapping):
     def new(self, config, name=None):
         """Create a new TrainingRun."""
         print('TrainingRun configuration:\n{}'.format(config))
-
         save_dir = self._int_dirs.new_dir(name=name)
         cfg_path = self._config_path(save_dir)
         config.to_file(cfg_path)  # save the config
