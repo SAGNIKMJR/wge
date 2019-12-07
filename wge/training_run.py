@@ -259,8 +259,8 @@ class MiniWoBTrainingRun(TorchTrainingRun):
                             # delete old best checkpoint
                             self.checkpoints.delete(best_bc_ckpt)
                         # save new best checkpoint
-                        self.checkpoints.save(self.train_state)
-                        best_bc_ckpt = self.train_state.train_steps
+                        self.checkpoints.save(self.train_state, control_step=control_step)
+                        best_bc_ckpt = control_step # self.train_state.train_steps
 
                     elif avg_reward_train <= best_avg_reward_train:
                         print('PRE-TRAINING -- overfit at step {}: {:.2f} (best={:.2f})'.format(
